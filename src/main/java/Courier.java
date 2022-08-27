@@ -5,18 +5,22 @@ public class Courier {
     private String firstName;
 
 
-    public Courier(String name, String password, String firstName) {
-        this.login = name;
+    public Courier(String login, String password, String firstName) {
+        this.login = login;
         this.password = password;
         this.firstName = firstName;
+    }
+
+    public Courier() {
+
     }
 
     public String getLogin() {
         return login;
     }
 
-    public void setName(String name) {
-        this.login = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -33,5 +37,21 @@ public class Courier {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public Courier(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+    public static Courier from(Courier courier) {
+        return new Courier(courier.getLogin(), courier.getPassword());
+    }
+
+    public Courier(String login) {
+        this.login = login;
+    }
+
+    public static Courier fromTwo(Courier courier) {
+        return new Courier(courier.getLogin());
     }
 }

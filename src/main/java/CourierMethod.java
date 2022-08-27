@@ -5,13 +5,12 @@ import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.*;
 
-public class CourierMethod extends ServiceUrl{
+public class CourierMethod extends RestClient{
     @Step("Create new courier account")
 public ValidatableResponse create(Courier courier) {
     return
         given()
-            .spec(getBaseUrl())
-            .and()
+            .spec(getBaseSpec())
             .body(courier)
             .when()
             .post("/api/v1/courier")
@@ -21,8 +20,7 @@ public ValidatableResponse create(Courier courier) {
 public ValidatableResponse login(CourierCredentials courierCredentials) {
         return
         given()
-            .spec(getBaseUrl())
-            .and()
+            .spec(getBaseSpec())
             .body(courierCredentials)
             .when()
             .post("/api/v1/courier/login")
@@ -33,11 +31,10 @@ public ValidatableResponse login(CourierCredentials courierCredentials) {
     public ValidatableResponse delete(int id) {
         return
                 given()
-                        .spec(getBaseUrl())
-                        .and()
+                        .spec(getBaseSpec())
                         .pathParam("id", id)
                         .when()
-                        .post("/api/v1/courier" + "{id}")
+                        .delete("/api/v1/courier/" + "{id}")
                         .then();
     }
 
