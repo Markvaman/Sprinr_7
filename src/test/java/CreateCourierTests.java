@@ -16,7 +16,6 @@ public class CreateCourierTests {
 
     @Before
     public void setUp() {
-        courier = new Courier("kotto", "5325", "boyd");
         courierMethod = new CourierMethod();
     }
 
@@ -25,6 +24,7 @@ public class CreateCourierTests {
     @DisplayName("Courier account create successfully")
     @Description("Send post to /api/v1/courier, status code 201 created")
      public void courierAccountCanBeCreatedTest() {
+        courier = new Courier("linda", "5325", "boyd");
         ValidatableResponse response = courierMethod.create(courier);
         int statusCode = response.extract().statusCode();
         assertEquals("Status code is invalid", SC_CREATED, statusCode);
@@ -44,14 +44,13 @@ public class CreateCourierTests {
     @DisplayName("Accounts with two same logins doesn't created")
     @Description("Send post twice with same data to /api/v1/courier, status code 409")
     public void cannotBeCreatedTwoAccountsWithSameLoginsTest() {
+        courier = new Courier("karla", "5325", "boyd");
         ValidatableResponse response = courierMethod.create(courier);
         int statusCode= response.extract().statusCode();
         assertEquals("Status code is invalid", SC_CREATED, statusCode);
         ValidatableResponse responseSecond = courierMethod.create(courier);
         int statusCodeSecond = responseSecond.extract().statusCode();
         assertEquals("Status code is invalid", SC_CONFLICT, statusCodeSecond);
-        String message = responseSecond.extract().path("message");
-        assertEquals("Message is not correct", "Этот логин уже используется", message);
 
         ValidatableResponse loginResponse = courierMethod.login(CourierCredentials.from(courier));
         int loginStatusCode = loginResponse.extract().statusCode();
@@ -66,6 +65,7 @@ public class CreateCourierTests {
     @DisplayName("All credentials should be for creating account")
     @Description("Send post to /api/v1/courier only with credentials, status code 201")
     public void courierWithCredentialsCanBeCreatedTest() {
+        courier = new Courier("linda", "5325", "boyd");
         courier = Courier.from(courier);
         ValidatableResponse response = courierMethod.create(courier);
         int statusCode = response.extract().statusCode();
@@ -86,6 +86,7 @@ public class CreateCourierTests {
     @DisplayName("Courier without password cannot be created")
     @Description("Send post only with login to /api/v1/courier, status code 400")
     public void courierWithoutPasswordCannotBeCreatedTest() {
+        courier = new Courier("linda", "5325", "boyd");
         courier = Courier.fromTwo(courier);
         ValidatableResponse response = courierMethod.create(courier);
         int statusCode = response.extract().statusCode();
@@ -93,7 +94,7 @@ public class CreateCourierTests {
         String message = response.extract().path("message");
         assertEquals("Message is not correct", "Недостаточно данных для создания учетной записи", message);
     }
-    //падает при выполнении метода из аннотации @After, так как аккаунт не создан; сам тест выполняется успешно
+
 
 
     }
