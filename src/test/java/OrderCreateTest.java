@@ -1,3 +1,5 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +37,8 @@ public class OrderCreateTest {
 
 
     @Test
+    @DisplayName("Create order with any scooter colour")
+    @Description("Send post to /api/v1/orders with list of colour params")
    public void orderCanBeCreateWithAnyParamColourTest() {
         ValidatableResponse response = orderMethod.createOrder(order);
         int statusCode = response.extract().statusCode();

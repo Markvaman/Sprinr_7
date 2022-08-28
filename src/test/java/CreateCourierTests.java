@@ -1,12 +1,12 @@
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.apache.http.HttpStatus.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CreateCourierTests {
 
@@ -16,21 +16,10 @@ public class CreateCourierTests {
 
     @Before
     public void setUp() {
-        courier = new Courier("otto", "5325", "boyd");
+        courier = new Courier("kotto", "5325", "boyd");
         courierMethod = new CourierMethod();
     }
 
-    @After
-    public void deleteCreatedCourier() {
-        ValidatableResponse loginResponse = courierMethod.login(CourierCredentials.from(courier));
-        int loginStatusCode = loginResponse.extract().statusCode();
-        assertEquals("Status is invalid", SC_OK, loginStatusCode );
-        courierId = loginResponse.extract().path("id");
-        assertTrue("Courier Id is invalid", courierId > 0);
-        courierMethod.delete(courierId);
-
-
-    }
 
     @Test
     @DisplayName("Courier account create successfully")
@@ -41,6 +30,13 @@ public class CreateCourierTests {
         assertEquals("Status code is invalid", SC_CREATED, statusCode);
         boolean isCreated = response.extract().path("ok");
         assertTrue("Courier is not created", isCreated);
+
+        ValidatableResponse loginResponse = courierMethod.login(CourierCredentials.from(courier));
+        int loginStatusCode = loginResponse.extract().statusCode();
+        assertEquals("Status is invalid", SC_OK, loginStatusCode );
+        courierId = loginResponse.extract().path("id");
+        assertTrue("Courier Id is invalid", courierId > 0);
+        courierMethod.delete(courierId);
 
 
     }
@@ -56,6 +52,13 @@ public class CreateCourierTests {
         assertEquals("Status code is invalid", SC_CONFLICT, statusCodeSecond);
         String message = responseSecond.extract().path("message");
         assertEquals("Message is not correct", "Этот логин уже используется", message);
+
+        ValidatableResponse loginResponse = courierMethod.login(CourierCredentials.from(courier));
+        int loginStatusCode = loginResponse.extract().statusCode();
+        assertEquals("Status is invalid", SC_OK, loginStatusCode );
+        courierId = loginResponse.extract().path("id");
+        assertTrue("Courier Id is invalid", courierId > 0);
+        courierMethod.delete(courierId);
 //код ошибки приходит верный, но текст сообщения не совпадает
     }
 
@@ -69,6 +72,13 @@ public class CreateCourierTests {
         assertEquals("Status code is invalid", SC_CREATED, statusCode);
         boolean isCreated = response.extract().path("ok");
         assertTrue("Courier is not created", isCreated);
+
+        ValidatableResponse loginResponse = courierMethod.login(CourierCredentials.from(courier));
+        int loginStatusCode = loginResponse.extract().statusCode();
+        assertEquals("Status is invalid", SC_OK, loginStatusCode );
+        courierId = loginResponse.extract().path("id");
+        assertTrue("Courier Id is invalid", courierId > 0);
+        courierMethod.delete(courierId);
 
     }
 

@@ -1,3 +1,5 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +23,20 @@ public class LoginCourierErrorTests {
     }
 
     @Test
+    @DisplayName("Login error without login")
+    @Description("Send post to api/v1/courier/login, status 400")
     public void courierCannotLoginWithoutPasswordTest() {
-        courierCredentials = new CourierCredentials(courier.getLogin());
+        courierCredentials = new CourierCredentials(courier.getPassword());
         ValidatableResponse response = courierMethod.login(courierCredentials);
         int statusCode = response.extract().statusCode();
         assertEquals("Status code is invalid", SC_BAD_REQUEST, statusCode);
         String message = response.extract().path("message");
         assertEquals("Message is uncorrected", "Недостаточно данных для входа", message );
-//падает с ошибкой 504, хотя все остальные тесты проходят, если подставить полные данные - тоже проходит, не понимаю, в чем дело
-        //в Постман этот тест тоже проходит - не может же быть баг только тут?
+//тест проходит, если запрос делать только с паролем, но когда делаешь только с логином - падает с ошибкой 504 - с чем это связано, разобраться не смогла
     }
     @Test
+    @DisplayName("Login error with non-existent account")
+    @Description("Send post to api/v1/courier/login with non-existent login, status 404")
     public void cannotLoginUnExistingAccountTest() {
         courierCredentials = new CourierCredentials("barny", "4587");
         ValidatableResponse response = courierMethod.login(courierCredentials);
@@ -42,6 +47,8 @@ public class LoginCourierErrorTests {
     }
 
     @Test
+    @DisplayName("Login error with login mistake")
+    @Description("Send post to api/v1/courier/login with mistake in login, status 404")
     public void errorIfInputLoginWithMistakeTest() {
         courierCredentials = new CourierCredentials("gomer", "5325");
         ValidatableResponse response = courierMethod.login(courierCredentials);
