@@ -3,7 +3,7 @@ import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
 
-public class OrderMethod extends RestClient {
+public class OrderCreateMethod extends RestClient {
     @Step("Create new order")
 
     public ValidatableResponse createOrder(Order order) {

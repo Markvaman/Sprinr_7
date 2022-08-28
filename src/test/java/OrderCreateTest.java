@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class OrderCreateTest {
     private Order order;
-    private OrderMethod orderMethod;
+    private OrderCreateMethod orderMethod;
     private String[]colour;
 
     public OrderCreateTest(String[] colour) {
@@ -30,7 +30,7 @@ public class OrderCreateTest {
     @Before
     public void setUp() {
         order = new Order("name", "surname", "address", "metro", "3698521478", 2, "12.09.2022","comment", colour);
-        orderMethod = new OrderMethod();
+        orderMethod = new OrderCreateMethod();
     }
 
 
